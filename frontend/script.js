@@ -4,7 +4,7 @@ const closePopup = document.getElementById('closePopup');
 let selectedSection;
 let currentTaskCard = null;
 let currentTaskId = null; // Track whether we're adding a new task or editing an existing one
-const BACKEND_URL = 'https://task-management-three-swart.vercel.app'; // Replace with actual backend
+const BACKEND_URL = 'https://task-management-three-swart.vercel.app/'; // Replace with actual backend
 
 // Fetch all tasks from the server when the page loads
 window.addEventListener('load', () => {
