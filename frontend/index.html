@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taskify</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+</head>
+<body>
+
+    <h1 id="h1">Taskify</h1>
+    <div class="main">
+        <div class="section TODO" id="todo">
+            <h2>To Do  <img src="./down.png" alt="dropdown" class="dropdown"></h2>
+            <button class="add">Add New <img src="https://static.thenounproject.com/png/261370-200.png" alt=""></button>
+        </div>
+        <div class="section InProgress" id="inprogress">
+            <h2>In Progress <img src="./down.png" alt="dropdown"></h2>
+            <button class="add">Add New <img src="https://static.thenounproject.com/png/261370-200.png" alt=""></button>
+        </div>
+        <div class="section UnderReview" id="underreview">
+            <h2>Under Review <img src="./down.png" alt="dropdown"></h2>
+            <button class="add">Add New <img src="https://static.thenounproject.com/png/261370-200.png" alt=""></button>
+        </div>
+        <div class="section Finished" id="finished">
+            <h2>Finished <img src="./down.png" alt="dropdown"></h2>
+            <button class="add">Add New <img src="https://static.thenounproject.com/png/261370-200.png" alt=""></button>
+        </div>
+    </div>
+
+    <div id="popupForm" class="popup">
+        <div class="popup-content">
+            <h2>Add new Task</h2>
+            <form>
+                <label for="taskName">Task Name:</label>
+                <input type="text" id="taskName" name="taskName">
+                <label for="difficulty">Level Of Difficulty:</label>
+                <select id="difficulty" name="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+                <label for="deadline">Deadline:</label>
+                <input type="date" id="deadline" name="deadline">
+
+                <label for="lastModified">Last Modified:</label>
+                <input type="date" id="lastModified" name="lastModified">
+                <button type="submit" id="saveTask">Save Task</button>
+            </form>
+            <button id="closePopup">Close</button>
+        </div>
+    </div>
+
+<script src="script.js"></script>
+
+
+</body>
+</html>
