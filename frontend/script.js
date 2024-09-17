@@ -4,17 +4,18 @@ const closePopup = document.getElementById('closePopup');
 let selectedSection;
 let currentTaskCard = null;
 let currentTaskId = null; // Track whether we're adding a new task or editing an existing one
-const BACKEND_URL = 'https://task-management-three-swart.vercel.app/'; // Replace with actual backend
+const BACKEND_URL = 'https://task-management-three-swart.vercel.app'; // Correct URL
 
 // Fetch all tasks from the server when the page loads
 window.addEventListener('load', () => {
-    fetch(`${BACKEND_URL}/tasks`)
+    fetch(`${BACKEND_URL}/tasks`) // No double slashes
         .then(response => response.json())
         .then(tasks => {
             tasks.forEach(task => createTaskCard(task));
         })
-        .catch(err => console.error('Error fetching tasks:', err)); // Log errors for debugging
+        .catch(err => console.error('Error fetching tasks:', err));
 });
+
 
 // Add new task button functionality
 addNewButtons.forEach(button => {
