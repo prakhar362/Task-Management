@@ -12,7 +12,8 @@ window.addEventListener('load', () => {
         .then(response => response.json())
         .then(tasks => {
             tasks.forEach(task => createTaskCard(task));
-        });
+        })
+        .catch(err => console.error('Error fetching tasks:', err)); // Log errors for debugging
 });
 
 // Add new task button functionality
@@ -55,14 +56,15 @@ document.addEventListener('click', function(event) {
             .then(() => {
                 taskCard.remove();
                 alert('Task deleted successfully!');
-            });
+            })
+            .catch(err => alert('Error deleting task: ' + err)); // Handle errors while deleting
     }
 });
 
 // Save or update task when save button is clicked
 document.getElementById('saveTask').addEventListener('click', function(event) {
     event.preventDefault();
-    
+
     const taskName = document.getElementById('taskName').value;
     const difficulty = document.getElementById('difficulty').value;
     const deadline = document.getElementById('deadline').value;
@@ -88,7 +90,8 @@ document.getElementById('saveTask').addEventListener('click', function(event) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(taskData)
-        }).then(response => response.json())
+        })
+        .then(response => response.json())
         .then(updatedTask => {
             // Update task on frontend
             const taskCard = document.querySelector(`.task-card[data-task-id="${currentTaskId}"]`);
@@ -102,9 +105,8 @@ document.getElementById('saveTask').addEventListener('click', function(event) {
             alert('Task updated successfully!');
             popupForm.style.display = 'none';
             resetFormFields();
-        }).catch(err => {
-            alert('Error updating task: ' + err);
-        });
+        })
+        .catch(err => alert('Error updating task: ' + err)); // Handle errors during update
     } else {
         // Create a new task on the server via POST request
         fetch(`${BACKEND_URL}/tasks`, {
@@ -113,16 +115,16 @@ document.getElementById('saveTask').addEventListener('click', function(event) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ ...taskData, section: selectedSection.id })
-        }).then(response => response.json())
+        })
+        .then(response => response.json())
         .then(newTask => {
             // Add the new task to the frontend
             createTaskCard(newTask);
             alert('Task added successfully!');
             popupForm.style.display = 'none';
             resetFormFields();
-        }).catch(err => {
-            alert('Error adding task: ' + err);
-        });
+        })
+        .catch(err => alert('Error adding task: ' + err)); // Handle errors during addition
     }
 });
 
@@ -154,22 +156,7 @@ sections.forEach(section => {
         draggable: '.task-card', // The class of the draggable items
         ghostClass: 'sortable-ghost', // Class applied when dragging over
         onEnd: function (evt) {
-            const taskId = evt.item.dataset.taskId;
-            const newSectionId = evt.to.id;
-
-            // Update task section in the backend when moved
-            fetch(`${BACKEND_URL}/tasks/${taskId}/move`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ section: newSectionId })
-            }).then(response => response.json())
-            .then(() => {
-                console.log(`Task moved to ${newSectionId}`);
-            }).catch(err => {
-                alert('Error moving task: ' + err);
-            });
+            console.log(`Task moved to ${evt.to.id}`);
         }
     });
 });
