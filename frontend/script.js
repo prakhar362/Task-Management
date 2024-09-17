@@ -4,10 +4,11 @@ const closePopup = document.getElementById('closePopup');
 let selectedSection;
 let currentTaskCard = null;
 let currentTaskId = null; // Track whether we're adding a new task or editing an existing one
+const BACKEND_URL = 'https://task-management-three-swart.vercel.app'; // Replace with actual backend
 
 // Fetch all tasks from the server when the page loads
 window.addEventListener('load', () => {
-    fetch('/tasks')
+    fetch(`${BACKEND_URL}/tasks`)
         .then(response => response.json())
         .then(tasks => {
             tasks.forEach(task => createTaskCard(task));
@@ -49,7 +50,7 @@ document.addEventListener('click', function(event) {
         const taskId = taskCard.dataset.taskId;
 
         // Delete task from the server
-        fetch(`/tasks/${taskId}`, { method: 'DELETE' })
+        fetch(`${BACKEND_URL}/tasks/${taskId}`, { method: 'DELETE' })
             .then(response => response.json())
             .then(() => {
                 taskCard.remove();
@@ -81,7 +82,7 @@ document.getElementById('saveTask').addEventListener('click', function(event) {
 
     if (currentTaskId) {
         // Update existing task on the server via PUT request
-        fetch(`/tasks/${currentTaskId}`, {
+        fetch(`${BACKEND_URL}/tasks/${currentTaskId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -106,7 +107,7 @@ document.getElementById('saveTask').addEventListener('click', function(event) {
         });
     } else {
         // Create a new task on the server via POST request
-        fetch('/tasks', {
+        fetch(`${BACKEND_URL}/tasks`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -153,7 +154,22 @@ sections.forEach(section => {
         draggable: '.task-card', // The class of the draggable items
         ghostClass: 'sortable-ghost', // Class applied when dragging over
         onEnd: function (evt) {
-            console.log(`Task moved to ${evt.to.id}`);
+            const taskId = evt.item.dataset.taskId;
+            const newSectionId = evt.to.id;
+
+            // Update task section in the backend when moved
+            fetch(`${BACKEND_URL}/tasks/${taskId}/move`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ section: newSectionId })
+            }).then(response => response.json())
+            .then(() => {
+                console.log(`Task moved to ${newSectionId}`);
+            }).catch(err => {
+                alert('Error moving task: ' + err);
+            });
         }
     });
 });
